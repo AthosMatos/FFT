@@ -1,0 +1,7 @@
+﻿  main.cpp
+C:\Users\athos\Documents\FFT\FFT\main.cpp(11,10): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\athos\Documents\FFT\FFT\main.cpp(16,31): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\athos\Documents\FFT\FFT\main.cpp(17,31): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\athos\Documents\FFT\FFT\main.cpp(23,31): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\athos\Documents\FFT\FFT\main.cpp(24,31): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  FFT.vcxproj -> C:\Users\athos\Documents\FFT\FFT\x64\Debug\FFT.exe
