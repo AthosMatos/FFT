@@ -46,28 +46,107 @@ vector<complex<double>> FFT(vector<complex<double>> samples)
 	return reorded;
 }
 
-int main()
-{
-	//vector<complex<double>> samples = { 0,0.707, 1,0.707, 0,-0.707, -1,-0.707};
-	vector<complex<double>> samples = { 0,1,0,-1 };
+string s;
 
+extern "C" const char* fft(const char* strS)
+{
+	vector<complex<double>> samples;
+	stringstream ss(strS);
+	vector<string> tokens;
+	string temp_str;
+
+	while (getline(ss, temp_str, ','))
+	{
+		tokens.push_back(temp_str);
+	}
+	for (int i = 0; i < tokens.size(); i++)
+	{
+		samples.push_back(stod(tokens[i]));
+	}
 	auto reorded = FFT(samples);
+
 	reorded.erase(reorded.begin() + (reorded.size() / 2), reorded.end());
 	for (auto& a : reorded)
 	{
 		a *= 2;
 	}
 
-	
+	s.clear();
+	s += "{\n";
+	int i = 0;
+
 	for (auto& a : reorded)
 	{
-		cout <<"Img " << a.imag() <<" ";
-		cout << "Real " << a.real() << endl;
-	}
+		stringstream string_object_name;
+		string_object_name << abs(a);
 
+		string str = "\":"; // ":
+		string objName = "\"" + string_object_name.str() + "\""; // "objName"
+		stringstream sint;
+		sint << i;
+
+		s += "\"f" + sint.str() + str + objName + ",\n"; //"fi":"objName\n"
+
+		i++;
+	}
+	s.pop_back();
+	s.pop_back();
+	s += "\n}";
+
+	return s.c_str();
+}
+
+
+int main()
+{
+	//cout<<fft("0,1,0,-1,0,1,0,-1");
+
+	
 
 	return 0;
 }
 
 
+/*
 
+extern "C" const char* fft(double strVector)
+{
+	
+
+	auto reorded = FFT(samples);
+
+	reorded.erase(reorded.begin() + (reorded.size() / 2), reorded.end());
+	for (auto& a : reorded)
+	{
+		a *= 2;
+	}
+
+	string s = "{\n";
+	int i = 0;
+
+	for (auto& a : reorded)
+	{
+		stringstream string_object_name;
+		string_object_name << abs(a);
+
+		string str = "\":"; // ":
+		string objName = "\"" + string_object_name.str() + "\""; // "objName"
+		stringstream sint;
+		sint << i;
+
+		s += "\"f" + sint.str() + str + objName + ",\n"; //"fi":"objName\n"
+
+		i++;
+	}
+	s.pop_back();
+	s.pop_back();
+	s += "\n}";
+
+	//cout << s;
+
+	return s.c_str();
+}
+
+
+
+*/

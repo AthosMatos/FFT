@@ -1,1 +1,2 @@
 C:\Users\athos\Documents\FFT\FFT\x64\Debug\FFT.exe
+C:\Users\athos\Desktop\GitHub\FFT\x64\Debug\FFT.exe
