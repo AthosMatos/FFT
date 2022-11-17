@@ -1,9 +1,8 @@
 require('./test').onRuntimeInitialized = _ => 
 {
     const test = require('./test').cwrap('fft', 'string', ['string',]);
-    //let obj = test("0,0.707,1,0.707,0,-0.707,-1,-0.707")
+    //let obj = test("2,1,0,-1,-2,-1,0,1")
 
- 
     const amplitudeSamples =
         (`
             1,
@@ -1031,6 +1030,6 @@ require('./test').onRuntimeInitialized = _ =>
             0.9921875,
             0.9921875`
         )
-    let obj = test(amplitudeSamples)
+    let obj = test(amplitudeSamples,48000)
     console.log(JSON.parse(obj))
 };

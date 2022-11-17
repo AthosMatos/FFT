@@ -48,7 +48,7 @@ vector<complex<double>> FFT(vector<complex<double>> samples)
 
 string s;
 
-extern "C" const char* fft(const char* strS)
+extern "C" const char* fft(const char* strS,int SamplingRate)
 {
 	vector<complex<double>> samples;
 	stringstream ss(strS);
@@ -63,6 +63,9 @@ extern "C" const char* fft(const char* strS)
 	{
 		samples.push_back(stod(tokens[i]));
 	}
+
+	auto Interval = SamplingRate / samples.size();
+
 	auto reorded = FFT(samples);
 
 	reorded.erase(reorded.begin() + (reorded.size() / 2), reorded.end());
@@ -87,7 +90,7 @@ extern "C" const char* fft(const char* strS)
 
 		s += "\"f" + sint.str() + str + objName + ",\n"; //"fi":"objName\n"
 
-		i++;
+		i+= Interval;
 	}
 	s.pop_back();
 	s.pop_back();
