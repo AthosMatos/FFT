@@ -2,91 +2,72 @@
 #include <iomanip>
 #include <cmath>
 #include <vector>
+#include <complex>
+#include <numbers>
 
 using namespace std;
-const double pi = 3.14159265358979323846;
 
-float precision(float f, int places)
+const double PI = 3.141592653589793238463;
+
+complex<double> precision(complex<double> f, int places)
 {
-	float n = std::pow(10.0f, places);
-	return std::round(f * n) / n;
+	double n = std::pow(10.0f, places);
+	return complex<double>((std::round(f.real() * n) / n), (std::round(f.imag() * n) / n));
 }
-pair<float, float> EulersFormula(int k, int m, int N)
-{
-	float cosCalc = precision(cos((-2 * pi * k * m) / (N / 2)), 3);
-	float sinCalc = precision(sin((-2 * pi * k * m) / (N / 2)), 3);
 
-	return pair<float, float>(cosCalc, sinCalc);
-}
-pair<float, float> EulersFormula(int k, int N)
+vector<complex<double>> FFT(vector<complex<double>> samples)
 {
-	float cosCalc = precision(cos((-2 * pi * k) / N), 3);
-	float sinCalc = precision(sin((-2 * pi * k) / N), 3);
+	if (samples.size() <= 1) return samples;
 
-	return pair<float, float>(cosCalc, sinCalc);
-}
-float GetFEven(int k,int N, vector<int> Samples)
-{
-	float evenCalc = 0;
+	const int N = samples.size();
+	const int M = samples.size() / 2;
 
-	for (int m = 0; m <= ((N / 2) - 1); m++)
+	vector<complex<double>> even;
+	vector<complex<double>> odd;
+
+	for (int i = 0; i < M; i++)
 	{
-		const auto EFR = EulersFormula(k, m, N);
-		evenCalc += Samples[2 * m] * (EFR.first + EFR.second);
+		even.push_back(samples[i * 2]);
+		odd.push_back(samples[(i * 2) + 1]);
 	}
 
-	return evenCalc;
-}
-float GetFOdd(int k, int N, vector<int> Samples)
-{
-	float oddCalc = 0;
-
-	for (int m = 0; m <= ((N / 2) - 1); m++)
+	vector<complex<double>> reorded(N);
+	auto re = FFT(even);
+	auto ro = FFT(odd);
+	
+	for (int k = 0; k < M; k++)
 	{
-		const auto EFR = EulersFormula(k, m, N);
-		oddCalc += Samples[2 * m + 1] * (EFR.first + EFR.second);
-	}
-	const auto EFR = EulersFormula(k, N);
-	oddCalc *= (EFR.first + EFR.second);
+		complex<double> cmpExp = polar(1.0, (-2 * PI * k) / N) * ro[k]; //equivalent to (r * (cos(theta) + sin(theta) * 1i)) where (polar(r, theta))
 
-	return oddCalc;
-}
-
-struct EO
-{
-	float even;
-	float odd;
-};
-
-vector<EO> freqs;
-
-float FFT(int N, vector<int> Samples)
-{
-	for (int k = 0; k < N / 2; k++)
-	{
-		auto F_even = GetFEven(k, N, Samples);
-		auto F_odd = GetFOdd(k, N, Samples);
-
-		EO eo;
-		eo.even = F_even;
-		eo.odd = F_odd;
-
-		freqs.push_back(eo);
-
-		//FFT(N, Samples);
-		//cout << "F" << k << " " << F_even + F_odd << endl;
+		reorded[k] = precision(re[k] + cmpExp, 3);
+		reorded[k + M] = precision(re[k] - cmpExp, 3);
 	}
 
-
-
-	return 0;
+	return reorded;
 }
-
-
 
 int main()
 {
-	FFT(4, vector<int>{0, 1, 0, -1 });
+	//vector<complex<double>> samples = { 0,0.707, 1,0.707, 0,-0.707, -1,-0.707};
+	vector<complex<double>> samples = { 0,1,0,-1 };
+
+	auto reorded = FFT(samples);
+	reorded.erase(reorded.begin() + (reorded.size() / 2), reorded.end());
+	for (auto& a : reorded)
+	{
+		a *= 2;
+	}
+
+	
+	for (auto& a : reorded)
+	{
+		cout <<"Img " << a.imag() <<" ";
+		cout << "Real " << a.real() << endl;
+	}
+
 
 	return 0;
 }
+
+
+
