@@ -1,0 +1,1 @@
+emcc -O3 -s WASM=1 -s EXTRA_EXPORTED_RUNTIME_METHODS='["cwrap"]' -s EXPORTED_FUNCTIONS="['_fft']" main.cpp -o fft.jsA

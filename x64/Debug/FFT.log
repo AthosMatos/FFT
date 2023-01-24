@@ -3,4 +3,6 @@ C:\Users\athos\Desktop\GitHub\FFT\main.cpp(22,30): warning C4267: 'initializing'
 C:\Users\athos\Desktop\GitHub\FFT\main.cpp(22,30): warning C4267: 'initializing': conversion from 'size_t' to 'const int', possible loss of data
 C:\Users\athos\Desktop\GitHub\FFT\main.cpp(23,34): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\athos\Desktop\GitHub\FFT\main.cpp(23,34): warning C4267: 'initializing': conversion from 'size_t' to 'const int', possible loss of data
+C:\Users\athos\Desktop\GitHub\FFT\main.cpp(70,45): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\athos\Desktop\GitHub\FFT\main.cpp(70,45): warning C4267: 'initializing': conversion from 'size_t' to 'const int', possible loss of data
   FFT.vcxproj -> C:\Users\athos\Desktop\GitHub\FFT\x64\Debug\FFT.exe

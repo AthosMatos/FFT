@@ -46,63 +46,64 @@ vector<complex<double>> FFT(vector<complex<double>> samples)
 	return reorded;
 }
 
-string s;
+string jsonString;
 
 extern "C" const char* fft(const char* strS,int SamplingRate)
 {
 	vector<complex<double>> samples;
 	stringstream ss(strS);
-	vector<string> tokens;
 	string temp_str;
 
 	while (getline(ss, temp_str, ','))
 	{
-		tokens.push_back(temp_str);
-	}
-	for (int i = 0; i < tokens.size(); i++)
-	{
-		samples.push_back(stod(tokens[i]));
+		samples.push_back(stod(temp_str));
 	}
 
 	auto Interval = SamplingRate / samples.size();
-
 	auto reorded = FFT(samples);
+	//reorded.erase(reorded.begin() + (reorded.size() / 2), reorded.end()); //nYQUIST lIMIT
 
-	reorded.erase(reorded.begin() + (reorded.size() / 2), reorded.end());
-	for (auto& a : reorded)
+	jsonString.clear();
+	jsonString += "{\n \"data\":[";
+
+	const int NyquistLimit = reorded.size() / 2;
+
+	for (int index = 0;index < NyquistLimit;index++)
 	{
-		a *= 2;
+		stringstream amplitudeValue;
+		reorded[index] *= 2;
+		amplitudeValue << abs(reorded[index]);
+		jsonString += amplitudeValue.str() + ",\n";
 	}
 
-	s.clear();
-	s += "{\n";
-	int i = 0;
+	
 
+	/*
 	for (auto& a : reorded)
 	{
-		stringstream string_object_name;
-		string_object_name << abs(a);
+		
 
-		string str = "\":"; // ":
-		string objName = "\"" + string_object_name.str() + "\""; // "objName"
+		//string str = "\":"; // ":
+		//string objName = "\"" + string_object_name.str() + "\""; // "objName"
 		stringstream sint;
 		sint << i;
 
-		s += "\"f" + sint.str() + str + objName + ",\n"; //"fi":"objName\n"
+		s += string_object_name.str() + ",\n"; //"fi":"objName\n"
 
 		i+= Interval;
 	}
-	s.pop_back();
-	s.pop_back();
-	s += "\n}";
+	*/
+	jsonString.pop_back();
+	jsonString.pop_back();
+	jsonString += "\n]}";
 
-	return s.c_str();
+	return jsonString.c_str();
 }
 
 
 int main()
 {
-	//cout<<fft("0,1,0,-1,0,1,0,-1");
+	cout<<fft("0,0.707,1,0.707,0,-0.707,-1,-0.707",48000);
 
 	
 
